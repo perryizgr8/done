@@ -1,0 +1,14 @@
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    develop:
+      watch:
+        - action: rebuild
+          path: ./templates
+          target: /app/templates
+        - action: rebuild
+          path: ./cmd
+        - action: rebuild
+          path: ./pkg
