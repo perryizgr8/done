@@ -5,6 +5,7 @@ go 1.22.0
 require (
 	github.com/gofiber/fiber/v3 v3.0.0-beta.3
 	github.com/gofiber/template/html/v2 v2.1.2
+	github.com/mattn/go-sqlite3 v1.14.22
 )
 
 require (
