@@ -1,4 +1,4 @@
-FROM golang:1.22.0
+FROM golang:1.22.0 AS builder
 
 # Set destination for COPY
 WORKDIR /app
@@ -13,12 +13,30 @@ COPY go.mod .
 COPY go.sum .
 RUN go mod tidy
 
-# Copy entrypoint script
-# COPY entrypoint.sh ./entrypoint.sh
-# RUN chmod +x ./entrypoint.sh
-
 # Build
 RUN go build -o /app/done ./cmd/done
+
+# Run stage
+FROM alpine
+
+# Set dest for COPY
+WORKDIR /app
+
+# Install libc6-compat for Alpine
+RUN apk add --no-cache libc6-compat
+
+# Copy the executables
+COPY --from=builder /app/done /app/done
+
+# Copy templates
+COPY templates/ ./templates/
+
+# Copy entrypoint script
+# COPY entrypoint.sh ./entrypoint.sh
+# RUN chmod +x ./entrypoint.s
+
+# Install curl for healthcheck
+RUN apk add --no-cache curl
 
 # This is for documentation purposes only.
 # To actually open the port, runtime parameters
