@@ -17,13 +17,14 @@ RUN go mod tidy
 RUN go build -o /app/done ./cmd/done
 
 # Run stage
-FROM alpine
+FROM debian:trixie-slim
 
 # Set dest for COPY
 WORKDIR /app
 
-# Install libc6-compat for Alpine
-RUN apk add --no-cache libc6-compat
+# Install software
+RUN apt-get update
+RUN apt-get install -y curl sqlite3
 
 # Copy the executables
 COPY --from=builder /app/done /app/done
@@ -34,9 +35,6 @@ COPY templates/ ./templates/
 # Copy entrypoint script
 # COPY entrypoint.sh ./entrypoint.sh
 # RUN chmod +x ./entrypoint.s
-
-# Install curl for healthcheck
-RUN apk add --no-cache curl
 
 # This is for documentation purposes only.
 # To actually open the port, runtime parameters
