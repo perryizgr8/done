@@ -18,6 +18,12 @@
         margin-left: 0;
         margin-right: 0;
     }
+
+    .controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 </style>
 
 <body>
@@ -33,6 +39,11 @@
                 </form>
             </li>
         </ul>
+    </div>
+    <div class="controls">
+        <a href="/{{.Links.LastQuarterUrl}}">{{.Links.LastQuarterText}}</a>
+        &emsp;
+        <a href="/{{.Links.LastYearUrl}}">{{.Links.LastYearText}}</a>
     </div>
 </body>
 

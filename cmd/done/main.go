@@ -10,6 +10,13 @@ import (
 	"github.com/perryizgr8/done/pkg/dbase"
 )
 
+type Links struct {
+	LastQuarterUrl  string
+	LastQuarterText string
+	LastYearUrl     string
+	LastYearText    string
+}
+
 func main() {
 	// Initialize database
 	dbase.Init()
@@ -27,7 +34,13 @@ func main() {
 	app.Get("/", func(c fiber.Ctx) error {
 		// Send a string response to the client
 		return c.Render("index", fiber.Map{
-			"Tasks": dbase.List(),
+			"Tasks": dbase.List()[:10],
+			"Links": Links{
+				LastQuarterUrl:  "/q3",
+				LastQuarterText: "q3",
+				LastYearUrl:     "/y23-24",
+				LastYearText:    "23-24",
+			},
 		})
 	})
 
