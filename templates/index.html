@@ -17,7 +17,6 @@
         margin-bottom: 0.67em;
         margin-left: 0;
         margin-right: 0;
-        font-weight: bold;
     }
 </style>
 
@@ -25,8 +24,14 @@
     <div class="container">
         <ul>
             {{range .Tasks}}
-            <li class="task">{{.Desc}}</li>
+            <li class="task">{{.Desc}}&emsp;|&emsp;{{.ShortDoneDate}}</li>
             {{end}}
+            <li class="task">
+                <form action="/add" method="post">
+                    <input type="text" id="newtask" name="newtask" placeholder="add a task...">
+                    <input type="submit" value="add">
+                </form>
+            </li>
         </ul>
     </div>
 </body>

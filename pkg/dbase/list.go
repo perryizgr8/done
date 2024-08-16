@@ -2,6 +2,7 @@ package dbase
 
 import (
 	"log"
+	"time"
 
 	"github.com/perryizgr8/done/pkg/common"
 
@@ -10,9 +11,10 @@ import (
 
 func List() []common.Task {
 	db := getdb()
+	defer db.Close()
 
 	q := `
-	SELECT id, desc, doneon FROM tasks ORDER BY id DESC;
+	SELECT id, desc, done FROM tasks ORDER BY id DESC;
 	`
 	rows, err := db.Query(q)
 	if err != nil {
@@ -23,10 +25,14 @@ func List() []common.Task {
 	var tasks []common.Task
 	for rows.Next() {
 		var task common.Task
-		err := rows.Scan(&task.Id, &task.Desc, &task.Doneon)
+		var doneon int64
+		err := rows.Scan(&task.Id, &task.Desc, &doneon)
+		log.Printf("doneone scanned: %d", doneon)
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
+			continue
 		}
+		task.Done = time.Unix(0, doneon)
 		tasks = append(tasks, task)
 	}
 
